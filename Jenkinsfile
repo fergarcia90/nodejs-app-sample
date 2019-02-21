@@ -17,6 +17,7 @@ pipeline {
     }
     stage('Publish Image') {
       steps {
+        sh 'docker image tag nodejs-app-sample garciacfer/nodejs-app-sample:latest'
         withDockerRegistry([credentialsId: "c8e150dd-867b-4fd9-802e-b480d33f06d4", url: ""]) {
           sh 'docker image push garciacfer/nodejs-app-sample:latest'
         }
