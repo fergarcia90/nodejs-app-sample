@@ -11,8 +11,8 @@ pipeline {
     stage('Test image') {
       steps {
         sh 'docker container run -d --name nodejs-app-sample -p 80:3000 nodejs-app-sample'
+        sleep 10
         sh 'curl http://localhost:80'
-        sh 'docker container rm -f nodejs-app-sample'
       }
     }
     stage('Publish Image') {
@@ -23,6 +23,11 @@ pipeline {
           sh 'docker image push garciacfer/nodejs-app-sample:latest'
         }
       }
+    }
+  }
+  post {
+    always {
+      sh 'docker container rm -f nodejs-app-sample'
     }
   }
 }
