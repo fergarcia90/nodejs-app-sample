@@ -15,5 +15,14 @@ pipeline {
         sh 'docker container rm -f nodejs-app-sample'
       }
     }
+    stage('Publish Image') {
+      steps {
+        sh 'docker image tag nodejs-app-sample:latest nodejs-app-sample:${env.BUILD_NUMBER}'
+        withDockerRegistry([credentialsId: "c8e150dd-867b-4fd9-802e-b480d33f06d4", url: ""]) {
+          sh 'docker image push garciacfer/nodejs-app-sample:${env.BUILD_NUMBER}'
+          sh 'docker image push garciacfer/nodejs-app-sample:latest'
+        }
+      }
+    }
   }
 }
